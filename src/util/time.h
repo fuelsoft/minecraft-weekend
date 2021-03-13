@@ -8,7 +8,7 @@
 
 #define NOW() ({\
     struct timespec ts;\
-    timespec_get(&ts, TIME_UTC);\
+    clock_gettime(CLOCK_REALTIME, &ts);\
     ((ts.tv_sec * NS_PER_SECOND) + ts.tv_nsec);})
 
 #endif

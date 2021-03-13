@@ -1,10 +1,10 @@
 UNAME_S = $(shell uname -s)
 
-CC = clang
-CFLAGS = -std=c11 -O3 -g -Wall -Wextra -Wpedantic -Wstrict-aliasing
-CFLAGS += -Wno-pointer-arith -Wno-newline-eof -Wno-unused-parameter -Wno-gnu-statement-expression
-CFLAGS += -Wno-gnu-compound-literal-initializer -Wno-gnu-zero-variadic-macro-arguments
-CFLAGS += -Ilib/cglm/include -Ilib/glad/include -Ilib/glfw/include -Ilib/stb -Ilib/noise -fbracket-depth=1024
+CC = gcc
+CFLAGS = -std=c11 -Og -Wall -Wextra -Wpedantic -Wstrict-aliasing
+CFLAGS += -Wno-pointer-arith -Wno-unused-parameter # -Wno-newline-eof -Wno-gnu-statement-expression
+# CFLAGS += -Wno-gnu-compound-literal-initializer -Wno-gnu-zero-variadic-macro-arguments
+CFLAGS += -Ilib/cglm/include -Ilib/glad/include -Ilib/glfw/include -Ilib/stb -Ilib/noise
 LDFLAGS = lib/glad/src/glad.o lib/cglm/libcglm.a lib/glfw/src/libglfw3.a lib/noise/libnoise.a -lm
 
 # GLFW required frameworks on OSX
@@ -14,6 +14,10 @@ endif
 
 ifeq ($(UNAME_S), Linux)
 	LDFLAGS += -ldl -lpthread
+endif
+
+ifeq ($(UNAME_S), MSYS_NT-10.0-19041)
+	LDFLAGS += -lopengl32 -lgdi32
 endif
 
 SRC  = $(wildcard src/**/*.c) $(wildcard src/*.c) $(wildcard src/**/**/*.c) $(wildcard src/**/**/**/*.c)
